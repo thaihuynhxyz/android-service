@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="xyz.thaihuynh.service.MainActivity">
+
+    <TextView
+        android:id="@+id/basicService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Basic Service:"
+        app:layout_constraintBottom_toBottomOf="@id/basicStart"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/basicStart"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/basicStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start"
+        app:layout_constraintLeft_toRightOf="@id/basicService"
+        app:layout_constraintRight_toLeftOf="@+id/basicStop"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/basicStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stop"
+        app:layout_constraintLeft_toRightOf="@id/basicStart"
+        app:layout_constraintRight_toLeftOf="@+id/basicStopSelf"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/basicStopSelf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stop self"
+        app:layout_constraintLeft_toRightOf="@id/basicStop"
+        app:layout_constraintRight_toRightOf="parent"/>
+</android.support.constraint.ConstraintLayout>

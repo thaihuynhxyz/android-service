@@ -122,4 +122,22 @@
         android:text="message"
         app:layout_constraintLeft_toRightOf="@id/messengerService"
         app:layout_constraintTop_toBottomOf="@id/localFunction"/>
+
+    <TextView
+        android:id="@+id/remoteService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Remote Service:"
+        app:layout_constraintBottom_toBottomOf="@id/remoteFunction"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/remoteFunction"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/remoteFunction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="function"
+        app:layout_constraintLeft_toRightOf="@id/remoteService"
+        app:layout_constraintTop_toBottomOf="@id/messengerMessage"/>
 </android.support.constraint.ConstraintLayout>

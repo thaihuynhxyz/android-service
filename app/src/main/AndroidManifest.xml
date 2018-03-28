@@ -30,5 +30,10 @@
         <service android:name=".LocalService"/>
 
         <service android:name=".MessengerService"/>
+
+        <service
+            android:name=".RemoteService"
+            android:exported="true"
+            android:process=":remote"/>
     </application>
 </manifest>

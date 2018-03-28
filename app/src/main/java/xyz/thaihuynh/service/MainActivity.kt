@@ -24,38 +24,105 @@ class MainActivity : AppCompatActivity() {
     /** Messenger for communicating with the service.  */
     var mMessengerService: Messenger? = null
 
+    /** The primary interface we will be calling on the service.  */
+    var mRemoteService: IRemoteService? = null
+
     private val mReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
             intent?.getStringExtra(BackgroundService.STATE)?.let { Log.d("MainActivity", "onReceive: $it") }
         }
     }
 
+    /**
+     * This implementation is used to receive callbacks from the remote
+     * service.
+     */
+    private val mCallback = object : IRemoteServiceCallback.Stub() {
+        /**
+         * This is called by the remote service regularly to tell us about
+         * new values.  Note that IPC calls are dispatched through a thread
+         * pool running in each process, so the code executing here will
+         * NOT be running in our main thread like most other things -- so,
+         * to update the UI, we need to use a Handler to hop over there.
+         */
+        override fun valueChanged(value: Int) {
+            Log.d("MainActivity", "valueChanged: $value")
+        }
+    }
+
     /** Defines callbacks for service binding, passed to bindService()  */
-    private val mConnection = object : ServiceConnection {
+    private val mLocalConnection = object : ServiceConnection {
 
         override fun onServiceConnected(className: ComponentName,
                                         service: IBinder) {
-            Log.d("MainActivity", "onServiceConnected")
-            when (service) {
-                is LocalBinder -> {
-                    // We've bound to LocalService, cast the IBinder and get LocalService instance
-                    mLocalService = service.service
-                }
-                else -> {
-                    // This is called when the connection with the service has been
-                    // established, giving us the object we can use to
-                    // interact with the service.  We are communicating with the
-                    // service using a Messenger, so here we get a client-side
-                    // representation of that from the raw IBinder object.
-                    mMessengerService = Messenger(service)
-                }
-            }
+            Log.d("MainActivity", "mLocalConnection onServiceConnected")
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            mLocalService = (service as LocalBinder).service
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
             Log.d("MainActivity", "onServiceDisconnected")
             mLocalService = null
+        }
+    }
+
+    /**
+     * Class for interacting with the main interface of the service.
+     */
+    private val mMessengerConnection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName,
+                                        service: IBinder) {
+            Log.d("MainActivity", "mMessengerConnection onServiceConnected")
+            // This is called when the connection with the service has been
+            // established, giving us the object we can use to
+            // interact with the service.  We are communicating with the
+            // service using a Messenger, so here we get a client-side
+            // representation of that from the raw IBinder object.
+            mMessengerService = Messenger(service)
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            Log.d("MainActivity", "mMessengerConnection onServiceDisconnected")
             mMessengerService = null
+        }
+    }
+
+    /**
+     * Class for interacting with the main interface of the service.
+     */
+    private val mRemoteConnection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            // This is called when the connection with the service has been
+            // established, giving us the service object we can use to
+            // interact with the service.  We are communicating with our
+            // service through an IDL interface, so get a client-side
+            // representation of that from the raw service object.
+            mRemoteService = IRemoteService.Stub.asInterface(service)
+
+            // We want to monitor the service for as long as we are
+            // connected to it.
+            try {
+                mRemoteService?.registerCallback(mCallback)
+            } catch (e: RemoteException) {
+                // In this case the service has crashed before we could even
+                // do anything with it; we can count on soon being
+                // disconnected (and then reconnected if it can be restarted)
+                // so there is no need to do anything here.
+            }
+
+            // As part of the sample, tell the user what happened.
+            Log.d("MainActivity", "mRemoteConnection onServiceConnected")
+        }
+
+        override fun onServiceDisconnected(className: ComponentName) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected -- that is, its process crashed.
+            mRemoteService = null
+
+            // As part of the sample, tell the user what happened.
+            Log.d("MainActivity", "mRemoteConnection onServiceDisconnected")
         }
     }
 
@@ -82,6 +149,10 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
+
+        remoteFunction.setOnClickListener {
+            mRemoteService?.setValue(mLocalService?.getRandomNumber() ?: 0)
+        }
     }
 
     override fun onResume() {
@@ -89,15 +160,18 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(mReceiver, IntentFilter(BackgroundService.NOTIFICATION))
 
         // Bind to LocalService
-        bindService(Intent(this, LocalService::class.java), mConnection, Context.BIND_AUTO_CREATE)
+        bindService(Intent(this, LocalService::class.java), mLocalConnection, Context.BIND_AUTO_CREATE)
 
-        bindService(Intent(this, MessengerService::class.java), mConnection, Context.BIND_AUTO_CREATE)
+        bindService(Intent(this, MessengerService::class.java), mMessengerConnection, Context.BIND_AUTO_CREATE)
+        bindService(Intent(this, RemoteService::class.java), mRemoteConnection, Context.BIND_AUTO_CREATE)
     }
 
     override fun onPause() {
         super.onPause()
         unregisterReceiver(mReceiver)
 
-        unbindService(mConnection)
+        unbindService(mLocalConnection)
+        unbindService(mMessengerConnection)
+        unbindService(mRemoteConnection)
     }
 }

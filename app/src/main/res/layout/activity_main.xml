@@ -104,4 +104,22 @@
         android:text="function"
         app:layout_constraintLeft_toRightOf="@id/localService"
         app:layout_constraintTop_toBottomOf="@id/foregroundStart"/>
+
+    <TextView
+        android:id="@+id/messengerService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Messenger Service:"
+        app:layout_constraintBottom_toBottomOf="@id/messengerMessage"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/messengerMessage"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/messengerMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="message"
+        app:layout_constraintLeft_toRightOf="@id/messengerService"
+        app:layout_constraintTop_toBottomOf="@id/localFunction"/>
 </android.support.constraint.ConstraintLayout>

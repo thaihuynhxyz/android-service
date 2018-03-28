@@ -28,5 +28,7 @@
         <service android:name=".ForegroundService"/>
 
         <service android:name=".LocalService"/>
+
+        <service android:name=".MessengerService"/>
     </application>
 </manifest>

@@ -86,4 +86,22 @@
         app:layout_constraintLeft_toRightOf="@id/foregroundStart"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/backgroundCommand"/>
+
+    <TextView
+        android:id="@+id/localService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Local Service:"
+        app:layout_constraintBottom_toBottomOf="@id/localFunction"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/localFunction"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/localFunction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="function"
+        app:layout_constraintLeft_toRightOf="@id/localService"
+        app:layout_constraintTop_toBottomOf="@id/foregroundStart"/>
 </android.support.constraint.ConstraintLayout>

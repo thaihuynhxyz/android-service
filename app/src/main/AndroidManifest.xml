@@ -22,5 +22,7 @@
         </activity>
 
         <service android:name=".BasicService"/>
+
+        <service android:name=".BackgroundService"/>
     </application>
 </manifest>

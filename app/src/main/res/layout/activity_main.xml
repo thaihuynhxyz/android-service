@@ -58,4 +58,32 @@
         android:text="command"
         app:layout_constraintLeft_toRightOf="@id/backgroundService"
         app:layout_constraintTop_toBottomOf="@id/basicStart"/>
+
+    <TextView
+        android:id="@+id/foregroundService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Foreground Service:"
+        app:layout_constraintBottom_toBottomOf="@id/foregroundStart"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/foregroundStart"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/foregroundStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start"
+        app:layout_constraintLeft_toRightOf="@id/foregroundService"
+        app:layout_constraintRight_toLeftOf="@+id/foregroundStop"
+        app:layout_constraintTop_toBottomOf="@id/backgroundCommand"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/foregroundStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stop"
+        app:layout_constraintLeft_toRightOf="@id/foregroundStart"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backgroundCommand"/>
 </android.support.constraint.ConstraintLayout>

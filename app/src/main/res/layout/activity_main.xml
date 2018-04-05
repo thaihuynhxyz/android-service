@@ -13,9 +13,9 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="Basic Service:"
-        app:layout_constraintBottom_toBottomOf="@id/basicStart"
+        app:layout_constraintBottom_toBottomOf="@+id/basicStart"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@id/basicStart"/>
+        app:layout_constraintTop_toTopOf="@+id/basicStart"/>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/basicStart"
@@ -129,15 +129,25 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="Remote Service:"
-        app:layout_constraintBottom_toBottomOf="@id/remoteFunction"
+        app:layout_constraintBottom_toBottomOf="@id/remoteDownload"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@id/remoteFunction"/>
+        app:layout_constraintTop_toTopOf="@id/remoteDownload"/>
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/remoteFunction"
+        android:id="@+id/remoteDownload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="function"
+        android:text="download"
         app:layout_constraintLeft_toRightOf="@id/remoteService"
+        app:layout_constraintRight_toLeftOf="@+id/remoteLoad"
+        app:layout_constraintTop_toBottomOf="@id/messengerMessage"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/remoteLoad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="load"
+        app:layout_constraintLeft_toRightOf="@id/remoteDownload"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/messengerMessage"/>
 </android.support.constraint.ConstraintLayout>

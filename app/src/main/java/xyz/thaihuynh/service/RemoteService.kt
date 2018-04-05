@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.os.RemoteCallbackList
 import android.os.RemoteException
 import android.util.Log
+import java.io.File
 
 class RemoteService : Service() {
 
@@ -48,18 +49,39 @@ class RemoteService : Service() {
             if (cb != null) mCallbacks.unregister(cb)
         }
 
-        override fun setValue(value: Int) {
-            // Broadcast to all clients the new value.
-            val n = mCallbacks.beginBroadcast()
-            for (i in 0 until n) {
-                try {
-                    mCallbacks.getBroadcastItem(i).valueChanged(value)
-                } catch (e: RemoteException) {
-                    // The RemoteCallbackList will take care of removing
-                    // the dead object for us.
+        override fun loadFile(fileUrl: String) {
+            Injection.provideFilesRepository(this@RemoteService).getFile(fileUrl, object : FilesLocalDataSource.GetFileCallback {
+
+                override fun onFileLoaded(file: File) {
+                    Log.d("RemoteService", "onFileLoaded")
+                    // Broadcast to all clients the new value.
+                    val n = mCallbacks.beginBroadcast()
+                    for (i in 0 until n) {
+                        try {
+                            mCallbacks.getBroadcastItem(i).onLoadFileSuccess()
+                        } catch (e: RemoteException) {
+                            // The RemoteCallbackList will take care of removing
+                            // the dead object for us.
+                        }
+                    }
+                    mCallbacks.finishBroadcast()
                 }
-            }
-            mCallbacks.finishBroadcast()
+
+                override fun onDataNotAvailable() {
+                    Log.d("RemoteService", "onDataNotAvailable")
+                    // Broadcast to all clients the new value.
+                    val n = mCallbacks.beginBroadcast()
+                    for (i in 0 until n) {
+                        try {
+                            mCallbacks.getBroadcastItem(i).onLoadFileFailed()
+                        } catch (e: RemoteException) {
+                            // The RemoteCallbackList will take care of removing
+                            // the dead object for us.
+                        }
+                    }
+                    mCallbacks.finishBroadcast()
+                }
+            })
         }
     }
 }

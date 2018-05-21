@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import xyz.thaihuynh.service.LocalService.LocalBinder
+import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,15 +39,13 @@ class MainActivity : AppCompatActivity() {
      * service.
      */
     private val mCallback = object : IRemoteServiceCallback.Stub() {
-        /**
-         * This is called by the remote service regularly to tell us about
-         * new values.  Note that IPC calls are dispatched through a thread
-         * pool running in each process, so the code executing here will
-         * NOT be running in our main thread like most other things -- so,
-         * to update the UI, we need to use a Handler to hop over there.
-         */
-        override fun valueChanged(value: Int) {
-            Log.d("MainActivity", "valueChanged: $value")
+
+        override fun onLoadFileSuccess() {
+            Log.d("MainActivity", "onLoadFileSuccess")
+        }
+
+        override fun onLoadFileFailed() {
+            Log.d("MainActivity", "onLoadFileFailed")
         }
     }
 
@@ -150,8 +149,21 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        remoteFunction.setOnClickListener {
-            mRemoteService?.setValue(mLocalService?.getRandomNumber() ?: 0)
+        remoteDownload.setOnClickListener {
+            Injection.provideFilesRepository(this).getFile(FilesRepository.FILE_URL, object : FilesLocalDataSource.GetFileCallback {
+
+                override fun onFileLoaded(file: File) {
+                    Log.d("MainActivity", "onFileLoaded")
+                }
+
+                override fun onDataNotAvailable() {
+                    Log.d("MainActivity", "onDataNotAvailable")
+                }
+            })
+        }
+
+        remoteLoad.setOnClickListener {
+            mRemoteService?.loadFile(FilesRepository.FILE_URL)
         }
     }
 

@@ -5,11 +5,16 @@ import android.content.Intent
 import android.util.Log
 import java.util.concurrent.TimeUnit
 
-
+/**
+ * A constructor is required, and must call the super IntentService(String)
+ * constructor with a name for the worker thread.
+ */
 class BackgroundService : IntentService("BackgroundService") {
 
     /**
-     * handle intent on background one by one
+     * The IntentService calls this method from the default worker thread with
+     * the intent that started the service. When this method returns, IntentService
+     * stops the service, as appropriate.
      */
     override fun onHandleIntent(intent: Intent?) {
         Log.d("BackgroundService", "onHandleIntent run on ${Thread.currentThread().name}")

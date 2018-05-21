@@ -6,7 +6,6 @@ import android.os.Binder
 import android.os.IBinder
 import java.util.Random
 
-
 class LocalService : Service() {
 
     // Binder given to clients

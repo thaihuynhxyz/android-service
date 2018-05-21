@@ -20,5 +20,5 @@ interface IRemoteService {
      */
     void unregisterCallback(IRemoteServiceCallback cb);
 
-    void setValue(int value);
+    void loadFile(String fileUrl);
 }

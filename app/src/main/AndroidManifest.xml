@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="xyz.thaihuynh.service">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="xyz.thaihuynh.service">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,25 +18,33 @@
 
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <service android:name=".BasicService"/>
+        <service android:name=".BasicService" />
 
-        <service android:name=".BackgroundService"/>
+        <service android:name=".BackgroundService" />
 
-        <service android:name=".ForegroundService"/>
+        <service android:name=".ForegroundService" />
 
-        <service android:name=".LocalService"/>
+        <service android:name=".LocalService" />
 
-        <service android:name=".MessengerService"/>
+        <service android:name=".MessengerService" />
 
         <service
             android:name=".RemoteService"
             android:exported="true"
-            android:process=":remote"/>
+            android:process=":remote" />
+
+        <service
+            android:name=".NotificationListener"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

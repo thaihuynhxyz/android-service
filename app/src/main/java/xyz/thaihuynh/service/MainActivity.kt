@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import xyz.thaihuynh.service.LocalService.LocalBinder
 import java.io.File
 
-
 class MainActivity : AppCompatActivity() {
 
     var mLocalService: LocalService? = null
